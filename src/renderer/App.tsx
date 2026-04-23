@@ -8,7 +8,7 @@ import {GlobalStyle} from "./styles/GlobalStyle.ts";
 import {Toaster} from "./components/toast/Toast.tsx";
 import {useEffect, useState} from "react";
 import {toast, ToastType, ToastPosition} from "./components/toast/toast-core.ts";
-import {FirstLaunchModal} from "./components/FirstLaunchModal.tsx";
+import {FirstLaunchModal} from "./components/modals/FirstLaunchModal.tsx";
 
 // Toast 消息的类型定义
 interface ToastPayload {

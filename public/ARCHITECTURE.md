@@ -6,16 +6,20 @@
 
 ```text
 JiuYin-Helper/
-├── electron/                    # Electron 主进程、preload 和 IPC 协议
 ├── src/                         # React 渲染进程
-│   ├── components/pages/        # 九阴首页、设置页
-│   ├── overlay/                 # 九阴浮窗占位，业务启用前不展示任务数据
-│   └── stores/                  # 通用前端状态
-├── src-backend/
-│   ├── games/
-│   │   ├── common/              # GameOperator、InputBackend 等通用边界
-│   │   └── jiuyin/              # 九阴模块入口
-│   └── utils/                   # 日志、设置、快捷键等通用工具
+│   ├── main/                    # Electron 主进程、preload 和 IPC 协议
+│   ├── renderer/                # React 渲染进程
+│   │   ├── components/          # 布局、弹窗、Toast 等可复用组件
+│   │   ├── pages/               # 九阴首页、设置页、错误页
+│   │   ├── overlay/             # 九阴浮窗占位，业务启用前不展示任务数据
+│   │   ├── stores/              # 通用前端状态
+│   │   └── styles/              # 主题和全局样式
+│   ├── shared/                  # main/renderer 共享类型和轻量协议
+│   └── backend/
+│       ├── games/
+│       │   ├── common/          # GameOperator、InputBackend 等通用边界
+│       │   └── jiuyin/          # 九阴模块入口
+│       └── utils/               # 日志、设置、快捷键等通用工具
 └── public/resources/9yin/
     ├── templates/               # 九阴模板资源
     └── captures/failed/         # 识别失败截图

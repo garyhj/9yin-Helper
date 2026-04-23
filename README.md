@@ -8,7 +8,7 @@
 
 - 前端默认进入九阴真经空状态页。
 - 设置页仅保留九阴通用说明、快捷键和日志配置。
-- 后端新增 `src-backend/games` 九阴模块边界。
+- 后端新增 `src/backend/games` 九阴模块边界。
 - 新增 `InputBackend` 抽象，默认路线为 `NutInputBackend`，并预留 `HardwareInputBackend`。
 - 新增 `public/resources/9yin` 模板和失败截图目录规范。
 

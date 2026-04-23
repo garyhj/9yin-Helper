@@ -4,9 +4,9 @@ import 'source-map-support/register';
 import path from 'path';
 import { is, optimizer } from '@electron-toolkit/utils';
 import { IpcChannel } from './protocol.ts';
-import { jiuyinGameModule } from '../src-backend/games';
-import { initGlobalCrashHandler } from '../src-backend/utils/CrashLogger.ts';
-import { settingsStore } from '../src-backend/utils/SettingsStore.ts';
+import { jiuyinGameModule } from '../backend/games';
+import { initGlobalCrashHandler } from '../backend/utils/CrashLogger.ts';
+import { settingsStore } from '../backend/utils/SettingsStore.ts';
 
 initGlobalCrashHandler();
 

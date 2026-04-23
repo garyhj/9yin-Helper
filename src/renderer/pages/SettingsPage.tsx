@@ -1,8 +1,8 @@
 import { type ChangeEvent, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ThemeType } from '../../styles/theme.ts';
-import { logStore, LogAutoCleanThreshold } from '../../stores/logStore.ts';
-import { toast } from '../toast/toast-core.ts';
+import { ThemeType } from '../styles/theme.ts';
+import { logStore, LogAutoCleanThreshold } from '../stores/logStore.ts';
+import { toast } from '../components/toast/toast-core.ts';
 
 const PageWrapper = styled.div<{ theme: ThemeType }>`
   background-color: ${props => props.theme.colors.background};

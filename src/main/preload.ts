@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import type { IpcRendererEvent } from 'electron';
 import { IpcChannel } from './protocol.ts';
+import type { IpcApi, SettingsApi, UtilApi } from '../shared/preload-api.ts';
 
 contextBridge.exposeInMainWorld('ipcRenderer', {
     on(...args: Parameters<typeof ipcRenderer.on>) {
@@ -21,7 +22,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     },
 });
 
-const ipcApi = {
+const ipcApi: IpcApi = {
     on: (channel: string, callback: (...args: any[]) => void) => {
         const listener = (_event: IpcRendererEvent, ...args: any[]) => {
             callback(...args);
@@ -34,10 +35,9 @@ const ipcApi = {
         };
     },
 };
-export type IpcApi = typeof ipcApi;
 contextBridge.exposeInMainWorld('ipc', ipcApi);
 
-const utilApi = {
+const utilApi: UtilApi = {
     getToggleHotkey: (): Promise<string> => ipcRenderer.invoke(IpcChannel.HOTKEY_GET_TOGGLE),
     setToggleHotkey: (accelerator: string): Promise<boolean> => (
         ipcRenderer.invoke(IpcChannel.HOTKEY_SET_TOGGLE, accelerator)
@@ -48,12 +48,10 @@ const utilApi = {
     ),
     getAppVersion: (): Promise<string> => ipcRenderer.invoke(IpcChannel.APP_GET_VERSION),
 };
-export type UtilApi = typeof utilApi;
 contextBridge.exposeInMainWorld('util', utilApi);
 
-const settingsApi = {
+const settingsApi: SettingsApi = {
     get: <T = any>(key: string): Promise<T> => ipcRenderer.invoke(IpcChannel.SETTINGS_GET, key),
     set: <T = any>(key: string, value: T): Promise<void> => ipcRenderer.invoke(IpcChannel.SETTINGS_SET, key, value),
 };
-export type SettingsApi = typeof settingsApi;
 contextBridge.exposeInMainWorld('settings', settingsApi);

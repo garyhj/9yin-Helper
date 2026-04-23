@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-import type { IpcApi, SettingsApi, UtilApi } from '../electron/preload.ts';
+import type { IpcApi, SettingsApi, UtilApi } from '../shared/preload-api.ts';
 
 export {};
 

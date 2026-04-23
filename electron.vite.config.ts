@@ -7,8 +7,8 @@ export default defineConfig({
         plugins: [externalizeDepsPlugin()],
         build: {
             rollupOptions: {
-                // 告诉它入口是你的 "main.ts"
-                input: resolve(__dirname, 'electron/main.ts'),
+                // Electron 主进程入口
+                input: resolve(__dirname, 'src/main/index.ts'),
                 output: {
                     // 告诉它输出的文件名 *必须* 叫 "index.js"！
                     // (这样 Dev Server 才能找到它！)
@@ -18,11 +18,10 @@ export default defineConfig({
         },
     },
     preload: {
-        input: resolve(__dirname, 'electron/preload.ts'),
         plugins: [externalizeDepsPlugin()],
         build: {
             rollupOptions: {
-                input: resolve(__dirname, 'electron/preload.ts'),
+                input: resolve(__dirname, 'src/main/preload.ts'),
                 output: {
                     dir: resolve(__dirname, 'out/preload'),
                     entryFileNames: '[name].cjs',
@@ -32,10 +31,10 @@ export default defineConfig({
         }
     },
     renderer: {
-        root: resolve(__dirname, 'src'), // dev模式下，index.html所在的目录
+        root: resolve(__dirname, 'src/renderer'), // dev模式下，index.html所在的目录
         resolve: {  // renderer（你的React src/）
             alias: {
-                "@": resolve(__dirname, 'src'),  // 你的src别名
+                "@": resolve(__dirname, 'src/renderer'),  // 渲染进程源码别名
                 '@mui/styled-engine': '@mui/styled-engine-sc',  // 你的MUI
             }
         },
@@ -44,8 +43,8 @@ export default defineConfig({
                 // 告诉它 React App 的入口 HTML
                 // 多页面构建：主应用 + 游戏浮窗
                 input: {
-                    index: resolve(__dirname, 'src/index.html'),
-                    overlay: resolve(__dirname, 'src/overlay/overlay.html'),
+                    index: resolve(__dirname, 'src/renderer/index.html'),
+                    overlay: resolve(__dirname, 'src/renderer/overlay/overlay.html'),
                 },
             }
         },

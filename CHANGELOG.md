@@ -7,7 +7,7 @@
 - 项目切换为九阴真经专用方向。
 - 移除旧游戏的前端入口、IPC 暴露、打包资源、公共资源和业务脚本。
 - 新增九阴首页、阶段 0 设置页和九阴资源目录规范。
-- 新增 `src-backend/games` 模块边界、`JiuYinOperator` 空实现和 `InputBackend` 抽象。
+- 新增 `src/backend/games` 模块边界、`JiuYinOperator` 空实现和 `InputBackend` 抽象。
 
 ### Safety
 

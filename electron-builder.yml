@@ -7,9 +7,7 @@ directories:
 # 排除不需要打包进 app.asar 的文件/目录
 files:
   - '!**/.vscode/*'
-  - '!src/*'
-  - '!src-backend/*'
-  - '!electron/*'
+  - '!src/**/*'
   - '!public/*'
   - '!test/*'
   - '!scripts/*'

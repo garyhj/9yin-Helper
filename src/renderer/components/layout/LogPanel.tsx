@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import styled, {css} from 'styled-components';
-import {ThemeType} from '../styles/theme';
-import {logStore, LogEntry, LogLevel} from '../stores/logStore';
+import {ThemeType} from '../../styles/theme';
+import {logStore, LogEntry, LogLevel} from '../../stores/logStore';
 
 // 引入图标
 import InfoIcon from '@mui/icons-material/InfoOutlined';
@@ -13,7 +13,7 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 // -------------------------------------------------------------------
 // 类型定义（从 logStore 重新导出，保持兼容）
 // -------------------------------------------------------------------
-export type {LogLevel, LogEntry} from '../stores/logStore';
+export type {LogLevel, LogEntry} from '../../stores/logStore';
 
 // -------------------------------------------------------------------
 // 样式组件定义

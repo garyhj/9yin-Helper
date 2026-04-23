@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { ThemeType } from '../styles/theme';
+import { ThemeType } from '../../styles/theme';
 import CloseIcon from '@mui/icons-material/Close';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 

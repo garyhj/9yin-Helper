@@ -1,12 +1,12 @@
 // 喵~ 使用 React.lazy 实现路由懒加载，优化初始加载速度
 import {lazy, Suspense} from "react";
 import {createHashRouter} from "react-router-dom";
-import MainLayout from "./components/MainLayout.tsx";
-import ErrorPage from "./components/pages/ErrorPage.tsx";
-import {JiuYinHomePage} from "./components/pages/JiuYinHomePage.tsx";
+import MainLayout from "./components/layout/MainLayout.tsx";
+import ErrorPage from "./pages/ErrorPage.tsx";
+import {JiuYinHomePage} from "./pages/JiuYinHomePage.tsx";
 import { RoutePath } from "./constants/routes";
 
-const SettingsPage = lazy(() => import('./components/pages/SettingsPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 
 
 const loadingFallback = (
