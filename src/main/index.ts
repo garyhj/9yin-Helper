@@ -15,6 +15,7 @@ import {
 } from '../backend/games';
 import { initGlobalCrashHandler } from '../backend/utils/CrashLogger.ts';
 import { globalHotkeyManager } from '../backend/utils/GlobalHotkeyManager.ts';
+import { logger } from '../backend/utils/Logger.ts';
 import { settingsStore } from '../backend/utils/SettingsStore.ts';
 import { showToast } from '../backend/utils/ToastBridge.ts';
 import type {
@@ -236,6 +237,9 @@ function registerHandlers() {
         overlayWindow?.close();
         overlayWindow = null;
     });
+    if (win) {
+        logger.init(win);
+    }
 
     ipcMain.handle(IpcChannel.JIUYIN_CHECK_ENVIRONMENT, async () => {
         return jiuYinEnvironmentService.runCheck(runtimeState);

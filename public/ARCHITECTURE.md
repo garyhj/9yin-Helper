@@ -37,6 +37,7 @@ JiuYin-Helper/
 - `JiuYinInputProbeService` 负责前台点击、按键、组合键和拖拽探针。
 - `JiuYinTemplateService` 负责扫描模板分类目录和读取模板尺寸。
 - `JiuYinTemplateMatcherService` 负责使用九阴窗口截图或指定图片运行轻量模板匹配。
+- `JiuYinDiagnosticsLogger` 负责把关键排障事件输出到前端日志面板和本地 JSONL 文件。
 - 渲染进程新增“环境检查”和“模板调试”页面，主进程新增对应 IPC 和 preload API。
 - F10/F12 已作为阶段 1 安全热键接入，并在设置中阻止冲突配置，避免占用游戏常用的 F1~F9。
 

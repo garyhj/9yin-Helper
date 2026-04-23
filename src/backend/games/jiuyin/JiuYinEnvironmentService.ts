@@ -9,6 +9,7 @@ import type {
     JiuYinRuntimeState,
 } from '../../../shared/jiuyin-stage1.ts';
 import { nutInputBackend } from '../common/InputBackend.ts';
+import { jiuYinDiagnosticsLogger } from './JiuYinDiagnosticsLogger.ts';
 import { jiuYinWindowHelper } from './JiuYinWindowHelper.ts';
 
 const execFileAsync = promisify(execFile);
@@ -35,6 +36,7 @@ const makeCheck = (
 
 export class JiuYinEnvironmentService {
     public async runCheck(runtime: JiuYinRuntimeState): Promise<JiuYinEnvironmentReport> {
+        const startedAt = Date.now();
         const [windows, primaryWindow, inputBackend, isAdministrator, width, height] = await Promise.all([
             jiuYinWindowHelper.listWindows(),
             jiuYinWindowHelper.findBestWindow(),
@@ -86,7 +88,7 @@ export class JiuYinEnvironmentService {
             ),
         ];
 
-        return {
+        const report = {
             checkedAt: new Date().toISOString(),
             isAdministrator,
             display: {
@@ -100,6 +102,20 @@ export class JiuYinEnvironmentService {
             runtime,
             checks,
         };
+
+        jiuYinDiagnosticsLogger.info('environment.check.completed', {
+            primaryWindow: report.primaryWindow?.title ?? null,
+            windowCount: windows.length,
+            passCount: checks.filter(check => check.status === 'pass').length,
+            warnCount: checks.filter(check => check.status === 'warn').length,
+            failCount: checks.filter(check => check.status === 'fail').length,
+            display: report.display,
+            inputBackend,
+            isAdministrator,
+            durationMs: Date.now() - startedAt,
+        });
+
+        return report;
     }
 }
 

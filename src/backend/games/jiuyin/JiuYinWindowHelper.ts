@@ -1,6 +1,7 @@
 import { Window, getWindows } from '@nut-tree-fork/nut-js';
 import type { Region } from '@nut-tree-fork/nut-js';
 import type { JiuYinBounds, JiuYinWindowInfo } from '../../../shared/jiuyin-stage1.ts';
+import { jiuYinDiagnosticsLogger } from './JiuYinDiagnosticsLogger.ts';
 
 const TITLE_PATTERNS = [/九阴真经/i, /九阴/i, /jiuyin/i, /9yin/i, /age of wushu/i];
 
@@ -18,8 +19,10 @@ const getMatchReason = (title: string): string => {
 
 export class JiuYinWindowHelper {
     public async listWindows(): Promise<JiuYinWindowInfo[]> {
+        const startedAt = Date.now();
         const windows = await getWindows();
         const infos: JiuYinWindowInfo[] = [];
+        let skippedCount = 0;
 
         for (const window of windows) {
             try {
@@ -35,16 +38,28 @@ export class JiuYinWindowHelper {
                     matchReason: getMatchReason(title),
                 });
             } catch {
+                skippedCount += 1;
                 // 部分系统窗口可能拒绝读取标题或坐标，跳过即可。
             }
         }
 
-        return infos.sort((a, b) => Number(b.isLikelyJiuYin) - Number(a.isLikelyJiuYin));
+        const sortedInfos = infos.sort((a, b) => Number(b.isLikelyJiuYin) - Number(a.isLikelyJiuYin));
+        jiuYinDiagnosticsLogger.info('window.list.completed', {
+            totalWindows: windows.length,
+            readableWindows: sortedInfos.length,
+            likelyJiuYinWindows: sortedInfos.filter(info => info.isLikelyJiuYin).length,
+            skippedWindows: skippedCount,
+            durationMs: Date.now() - startedAt,
+        });
+
+        return sortedInfos;
     }
 
     public async findBestWindow(): Promise<{ window: Window; info: JiuYinWindowInfo } | null> {
+        const startedAt = Date.now();
         const windows = await getWindows();
         let fallback: { window: Window; info: JiuYinWindowInfo } | null = null;
+        let skippedCount = 0;
 
         for (const window of windows) {
             try {
@@ -61,6 +76,12 @@ export class JiuYinWindowHelper {
                 };
 
                 if (info.isLikelyJiuYin && info.isVisible) {
+                    jiuYinDiagnosticsLogger.info('window.best.found', {
+                        title: info.title,
+                        bounds: info.bounds,
+                        visible: info.isVisible,
+                        durationMs: Date.now() - startedAt,
+                    });
                     return { window, info };
                 }
 
@@ -68,8 +89,25 @@ export class JiuYinWindowHelper {
                     fallback = { window, info };
                 }
             } catch {
+                skippedCount += 1;
                 // 保持窗口枚举健壮性。
             }
+        }
+
+        if (fallback) {
+            jiuYinDiagnosticsLogger.warn('window.best.fallback', {
+                title: fallback.info.title,
+                bounds: fallback.info.bounds,
+                visible: fallback.info.isVisible,
+                skippedWindows: skippedCount,
+                durationMs: Date.now() - startedAt,
+            });
+        } else {
+            jiuYinDiagnosticsLogger.warn('window.best.not_found', {
+                totalWindows: windows.length,
+                skippedWindows: skippedCount,
+                durationMs: Date.now() - startedAt,
+            });
         }
 
         return fallback;

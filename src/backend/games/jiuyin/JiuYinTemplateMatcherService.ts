@@ -9,6 +9,7 @@ import type {
     JiuYinTemplateMatchResult,
 } from '../../../shared/jiuyin-stage2.ts';
 import { jiuYinCaptureService } from './JiuYinCaptureService.ts';
+import { jiuYinDiagnosticsLogger } from './JiuYinDiagnosticsLogger.ts';
 import { jiuYinTemplateService } from './JiuYinTemplateService.ts';
 
 interface RawImage {
@@ -116,48 +117,73 @@ const findBestMatch = (
 
 export class JiuYinTemplateMatcherService {
     public async matchTemplates(request: JiuYinTemplateMatchRequest): Promise<JiuYinTemplateMatchReport> {
-        const library = await jiuYinTemplateService.listTemplates();
-        const threshold = request.threshold ?? DEFAULT_THRESHOLD;
-        const maxResults = request.maxResults ?? DEFAULT_MAX_RESULTS;
-        const scanStep = clampScanStep(request.step);
-        const sourceImagePath = request.captureWindow || !request.sourceImagePath
-            ? (await jiuYinCaptureService.captureRegion({ useWindowRegion: true })).filePath
-            : request.sourceImagePath;
+        const startedAt = Date.now();
+        try {
+            const library = await jiuYinTemplateService.listTemplates();
+            const threshold = request.threshold ?? DEFAULT_THRESHOLD;
+            const maxResults = request.maxResults ?? DEFAULT_MAX_RESULTS;
+            const scanStep = clampScanStep(request.step);
+            const sourceImagePath = request.captureWindow || !request.sourceImagePath
+                ? (await jiuYinCaptureService.captureRegion({ useWindowRegion: true })).filePath
+                : request.sourceImagePath;
 
-        const selectedTemplates = library.templates.filter((template) => {
-            const categoryMatches = !request.category || request.category === 'all' || template.category === request.category;
-            const idMatches = !request.templateIds?.length || request.templateIds.includes(template.id);
-            return categoryMatches && idMatches;
-        });
+            const selectedTemplates = library.templates.filter((template) => {
+                const categoryMatches = !request.category || request.category === 'all' || template.category === request.category;
+                const idMatches = !request.templateIds?.length || request.templateIds.includes(template.id);
+                return categoryMatches && idMatches;
+            });
 
-        const sourceImage = await loadRawImage(sourceImagePath);
-        const candidates = await Promise.all(selectedTemplates.map(async (template): Promise<TemplateCandidate> => ({
-            template,
-            image: await loadRawImage(template.filePath),
-        })));
+            const sourceImage = await loadRawImage(sourceImagePath);
+            const candidates = await Promise.all(selectedTemplates.map(async (template): Promise<TemplateCandidate> => ({
+                template,
+                image: await loadRawImage(template.filePath),
+            })));
 
-        const matches = candidates
-            .map(candidate => findBestMatch(sourceImage, candidate, scanStep))
-            .filter((match): match is JiuYinTemplateMatchResult => match !== null)
-            .filter(match => match.score >= threshold)
-            .sort((a, b) => b.score - a.score)
-            .slice(0, maxResults);
+            const matches = candidates
+                .map(candidate => findBestMatch(sourceImage, candidate, scanStep))
+                .filter((match): match is JiuYinTemplateMatchResult => match !== null)
+                .filter(match => match.score >= threshold)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, maxResults);
 
-        const failedCapturePath = matches.length === 0 && request.saveFailedCapture
-            ? await this.saveFailedCapture(sourceImagePath)
-            : null;
+            const failedCapturePath = matches.length === 0 && request.saveFailedCapture
+                ? await this.saveFailedCapture(sourceImagePath)
+                : null;
 
-        return {
-            matchedAt: new Date().toISOString(),
-            sourceImagePath,
-            threshold,
-            templateCount: selectedTemplates.length,
-            matches,
-            failedCapturePath,
-            message: matches.length > 0
-                ? `找到 ${matches.length} 个模板匹配结果。`
-                : '未找到达到阈值的模板匹配结果，可将截图作为失败样本复盘。',
-        };
+            const report = {
+                matchedAt: new Date().toISOString(),
+                sourceImagePath,
+                threshold,
+                templateCount: selectedTemplates.length,
+                matches,
+                failedCapturePath,
+                message: matches.length > 0
+                    ? `找到 ${matches.length} 个模板匹配结果。`
+                    : '未找到达到阈值的模板匹配结果，可将截图作为失败样本复盘。',
+            };
+
+            jiuYinDiagnosticsLogger.info('template.match.completed', {
+                category: request.category ?? 'all',
+                threshold,
+                maxResults,
+                scanStep,
+                templateCount: selectedTemplates.length,
+                matchCount: matches.length,
+                topScore: matches[0]?.score ?? null,
+                topTemplate: matches[0]?.template.id ?? null,
+                sourceImagePath,
+                failedCapturePath,
+                durationMs: Date.now() - startedAt,
+            });
+
+            return report;
+        } catch (error) {
+            jiuYinDiagnosticsLogger.error('template.match.failed', error, {
+                request,
+                durationMs: Date.now() - startedAt,
+            });
+            throw error;
+        }
     }
 
     private async saveFailedCapture(sourceImagePath: string): Promise<string> {

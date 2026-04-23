@@ -8,6 +8,7 @@ import {
     type JiuYinTemplateInfo,
     type JiuYinTemplateLibrarySummary,
 } from '../../../shared/jiuyin-stage2.ts';
+import { jiuYinDiagnosticsLogger } from './JiuYinDiagnosticsLogger.ts';
 
 const CATEGORY_LABELS: Record<JiuYinTemplateCategory, string> = {
     common: '通用 UI',
@@ -49,6 +50,7 @@ export class JiuYinTemplateService {
     }
 
     public async listTemplates(): Promise<JiuYinTemplateLibrarySummary> {
+        const startedAt = Date.now();
         await this.ensureTemplateDirectories();
 
         const templates: JiuYinTemplateInfo[] = [];
@@ -85,11 +87,23 @@ export class JiuYinTemplateService {
             });
         }
 
-        return {
+        const summary = {
             rootPath: this.getTemplateRoot(),
             categories,
             templates,
         };
+
+        jiuYinDiagnosticsLogger.info('template.library.scanned', {
+            rootPath: summary.rootPath,
+            templateCount: templates.length,
+            categories: categories.map(category => ({
+                category: category.category,
+                count: category.count,
+            })),
+            durationMs: Date.now() - startedAt,
+        });
+
+        return summary;
     }
 }
 
