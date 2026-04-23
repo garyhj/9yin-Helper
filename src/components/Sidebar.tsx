@@ -1,15 +1,12 @@
 // --- 图标组件 ---
 import {NavLink} from "react-router-dom";
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import BoltIcon from '@mui/icons-material/Bolt';
 import styled from "styled-components";
-import React, {useEffect, useState} from "react";
+import {useState} from "react";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HomeIcon from '@mui/icons-material/Home';
-import ExtensionIcon from '@mui/icons-material/Extension';
-import { settingsStore } from "../stores/settingsStore";
 import type { SvgIconComponent } from "@mui/icons-material";
 import { RoutePath } from "../constants/routes";
 
@@ -24,8 +21,6 @@ interface NavItem {
 // 导航项初始配置（默认全部显示）
 const defaultNavItems: NavItem[] = [
     { path: RoutePath.HOME, label: '主界面', icon: HomeIcon, show: true },
-    { path: RoutePath.LINEUPS, label: '阵容搭配', icon: ExtensionIcon, show: true },
-    { path: RoutePath.DEBUG, label: '调试页', icon: DashboardIcon, show: true },
     { path: RoutePath.SETTINGS, label: '设置', icon: SettingsIcon, show: true },
 ];
 
@@ -109,13 +104,6 @@ const StyledNavLink = styled(NavLink)<{ $isCollapsed: boolean }>`
   }
 `;
 
-const Version = styled.div`
-  margin-top: auto;
-  text-align: center;
-  font-size: 0.75rem;
-  color: #4a5568;
-`;
-
 const ToggleButton = styled.button`
   margin-top: auto;
   background-color: ${props => props.theme.colors.elementHover};
@@ -151,33 +139,13 @@ const NavItemWrapper = styled.div<{ $isVisible: boolean }>`
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   // 导航项列表（带 show 属性）
-  const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
-  
-  // 根据设置更新指定导航项的 show 属性
-  const updateNavItemShow = (path: RoutePath, show: boolean) => {
-    setNavItems(prev => prev.map(item => 
-      item.path === path ? { ...item, show } : item
-    ));
-  };
-  
-  // 初始化 settingsStore 并订阅变化
-  useEffect(() => {
-    // 初始化（会从后端加载设置）
-    settingsStore.init().then(() => {
-      updateNavItemShow(RoutePath.DEBUG, settingsStore.getShowDebugPage());
-    });
-    
-    // 订阅设置变化，当其他组件修改设置时，动态更新对应项的 show
-    return settingsStore.subscribe((settings) => {
-      updateNavItemShow(RoutePath.DEBUG, settings.showDebugPage);
-    });
-  }, []);
+  const [navItems] = useState<NavItem[]>(defaultNavItems);
 
   return (
     <SidebarContainer $isCollapsed={isCollapsed}>
       <Logo>
         <BoltIcon />
-        <LinkText $isCollapsed={isCollapsed}>海克斯科技助手</LinkText>
+        <LinkText $isCollapsed={isCollapsed}>九阴助手</LinkText>
       </Logo>
       <Nav>
         {navItems.map((item) => {

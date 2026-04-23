@@ -1,21 +1,23 @@
 /// <reference types="vite/client" />
 
-import {ConfigApi, HexApi, IpcApi, LcuApi, TftApi, LineupApi, UtilApi, SettingsApi, StatsApi} from "../electron/preload.ts";
+import type { IpcApi, SettingsApi, UtilApi } from '../electron/preload.ts';
 
-export {}   // 让文件变成模块，避免全局污染
+export {};
 
-//  typescript里面，一个.ts or .d.ts文件如果没有任何import和export，ts会把它视为脚本文件，可能污染全局命名空间。
+type IpcRendererListener = (event: unknown, ...args: unknown[]) => void;
+
+interface ExposedIpcRenderer {
+    on(channel: string, listener: IpcRendererListener): unknown;
+    off(channel: string, listener: IpcRendererListener): unknown;
+    send(channel: string, ...args: unknown[]): void;
+    invoke<T = unknown>(channel: string, ...args: unknown[]): Promise<T>;
+}
 
 declare global {
     interface Window {
-        ipc:IpcApi
-        lcu:LcuApi
-        config:ConfigApi
-        hex:HexApi
-        tft:TftApi
-        lineup:LineupApi      // 阵容配置 API
-        util:UtilApi          // 通用工具 API
-        settings:SettingsApi  // 通用设置 API（与后端 SettingsStore 对接）
-        stats:StatsApi        // 统计数据 API
+        ipcRenderer: ExposedIpcRenderer;
+        ipc: IpcApi;
+        util: UtilApi;
+        settings: SettingsApi;
     }
 }

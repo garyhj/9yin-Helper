@@ -258,7 +258,7 @@ export const FirstLaunchModal: React.FC<FirstLaunchModalProps> = ({
                         <TitleIcon>
                             <RocketLaunchIcon />
                         </TitleIcon>
-                        <Title>欢迎使用 TFT 海克斯助手！ᕦ( •̀ ∀ •́ )ᕤ</Title>
+                        <Title>欢迎使用九阴助手</Title>
                     </TitleArea>
                     <CloseButton onClick={onClose}>
                         <CloseIcon />
@@ -272,16 +272,16 @@ export const FirstLaunchModal: React.FC<FirstLaunchModalProps> = ({
 
                     <List>
                         <li>
-                            <Warning>必须以管理员模式运行</Warning>，否则无法识别客户端
+                            <Warning>建议以管理员模式运行</Warning>，否则可能无法稳定识别或控制游戏窗口
                         </li>
                         <li>
-                            默认快捷键：<Highlight>F1</Highlight> 开始/停止挂机，<Highlight>F2</Highlight> 本局结束后停止
+                            默认快捷键：<Highlight>F1</Highlight> 开始/停止任务，<Highlight>F2</Highlight> 当前任务结束后停止
                         </li>
                         <li>
-                            首次使用建议在「阵容搭配」页面选择想要运营的阵容
+                            阶段 0 仅接入九阴专用项目壳，自动任务会从窗口识别和输入验证开始逐步补齐
                         </li>
                         <li>
-                            先在设置页中<Warning>备份当前设置</Warning>，以免偶尔关闭功能时备份自动恢复失败
+                            后续九阴功能默认要求窗口可见、非最小化，并且不要和程序争抢鼠标键盘
                         </li>
                     </List>
 
@@ -289,20 +289,20 @@ export const FirstLaunchModal: React.FC<FirstLaunchModalProps> = ({
                         <Warning>本软件完全开源免费（记得点star）</Warning>，若你付费购买了本软件，那你被坑了！
                     </Paragraph>
                     <Paragraph>
-                        本软件仅供学习交流使用，请勿用于任何商业用途。使用本软件所产生的任何后果由用户自行承担！
+                        本软件仅供学习交流使用，不包含反检测、驱动绕过、内存封包或后台绑定窗口能力。使用本软件所产生的任何后果由用户自行承担！
                     </Paragraph>
                 </ModalContent>
 
                 <ModalFooter>
                     <GitHubCard
-                        href="https://github.com/WJZ-P/TFT-Hextech-Helper"
+                        href="https://github.com/WJZ-P/9yin-Helper"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
                         </svg>
-                        给我点个 Star ⭐ 吧！
+                        项目仓库
                     </GitHubCard>
 
                     {/* 确认按钮 - 靠右 */}
