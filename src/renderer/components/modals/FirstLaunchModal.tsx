@@ -275,7 +275,7 @@ export const FirstLaunchModal: React.FC<FirstLaunchModalProps> = ({
                             <Warning>建议以管理员模式运行</Warning>，否则可能无法稳定识别或控制游戏窗口
                         </li>
                         <li>
-                            默认快捷键：<Highlight>F1</Highlight> 开始/停止任务，<Highlight>F2</Highlight> 当前任务结束后停止
+                            默认快捷键：<Highlight>F10</Highlight> 开始/停止任务，<Highlight>F12</Highlight> 当前任务结束后停止
                         </li>
                         <li>
                             阶段 0 仅接入九阴专用项目壳，自动任务会从窗口识别和输入验证开始逐步补齐

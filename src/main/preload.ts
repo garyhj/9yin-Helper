@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import type { IpcRendererEvent } from 'electron';
 import { IpcChannel } from './protocol.ts';
-import type { IpcApi, SettingsApi, UtilApi } from '../shared/preload-api.ts';
+import type { IpcApi, JiuYinApi, SettingsApi, UtilApi } from '../shared/preload-api.ts';
 
 contextBridge.exposeInMainWorld('ipcRenderer', {
     on(...args: Parameters<typeof ipcRenderer.on>) {
@@ -55,3 +55,12 @@ const settingsApi: SettingsApi = {
     set: <T = any>(key: string, value: T): Promise<void> => ipcRenderer.invoke(IpcChannel.SETTINGS_SET, key, value),
 };
 contextBridge.exposeInMainWorld('settings', settingsApi);
+
+const jiuYinApi: JiuYinApi = {
+    checkEnvironment: () => ipcRenderer.invoke(IpcChannel.JIUYIN_CHECK_ENVIRONMENT),
+    listWindows: () => ipcRenderer.invoke(IpcChannel.JIUYIN_LIST_WINDOWS),
+    captureRegion: (request) => ipcRenderer.invoke(IpcChannel.JIUYIN_CAPTURE_REGION, request),
+    runInputProbe: (request) => ipcRenderer.invoke(IpcChannel.JIUYIN_INPUT_PROBE, request),
+    getRuntimeState: () => ipcRenderer.invoke(IpcChannel.JIUYIN_RUNTIME_GET),
+};
+contextBridge.exposeInMainWorld('jiuyin', jiuYinApi);

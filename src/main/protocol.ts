@@ -8,4 +8,10 @@ export enum IpcChannel {
     HOTKEY_SET_STOP_AFTER_GAME = 'hotkey-set-stop-after-game',
     APP_GET_VERSION = 'app-get-version',
     OVERLAY_CLOSE = 'overlay-close',
+    JIUYIN_CHECK_ENVIRONMENT = 'jiuyin-check-environment',
+    JIUYIN_LIST_WINDOWS = 'jiuyin-list-windows',
+    JIUYIN_CAPTURE_REGION = 'jiuyin-capture-region',
+    JIUYIN_INPUT_PROBE = 'jiuyin-input-probe',
+    JIUYIN_RUNTIME_GET = 'jiuyin-runtime-get',
+    JIUYIN_RUNTIME_UPDATED = 'jiuyin-runtime-updated',
 }

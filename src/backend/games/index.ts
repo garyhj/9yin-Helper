@@ -23,7 +23,19 @@ export {
     nutInputBackend,
 } from './common';
 
-export { JiuYinOperator, jiuYinOperator, jiuyinGameModule } from './jiuyin';
+export {
+    JiuYinCaptureService,
+    JiuYinEnvironmentService,
+    JiuYinInputProbeService,
+    JiuYinOperator,
+    JiuYinWindowHelper,
+    jiuYinCaptureService,
+    jiuYinEnvironmentService,
+    jiuYinInputProbeService,
+    jiuYinOperator,
+    jiuYinWindowHelper,
+    jiuyinGameModule,
+} from './jiuyin';
 
 const gameModules: Record<SupportedGameId, GameModule> = {
     jiuyin: jiuyinGameModule,

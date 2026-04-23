@@ -136,8 +136,8 @@ const SettingsPage = () => {
   const [logAutoCleanThreshold, setLogAutoCleanThreshold] = useState<LogAutoCleanThreshold>(
     logStore.getThreshold()
   );
-  const [toggleHotkey, setToggleHotkey] = useState('F1');
-  const [stopAfterTaskHotkey, setStopAfterTaskHotkey] = useState('F2');
+  const [toggleHotkey, setToggleHotkey] = useState('F10');
+  const [stopAfterTaskHotkey, setStopAfterTaskHotkey] = useState('F12');
   const [isRecordingToggleHotkey, setIsRecordingToggleHotkey] = useState(false);
   const [isRecordingStopAfterTaskHotkey, setIsRecordingStopAfterTaskHotkey] = useState(false);
   const [currentVersion, setCurrentVersion] = useState('');

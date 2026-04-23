@@ -1,3 +1,5 @@
+import type { JiuYinApi } from './jiuyin-stage1.ts';
+
 export type IpcCleanup = () => void;
 
 export interface IpcApi {
@@ -16,3 +18,5 @@ export interface SettingsApi {
     get<T = any>(key: string): Promise<T>;
     set<T = any>(key: string, value: T): Promise<void>;
 }
+
+export type { JiuYinApi };

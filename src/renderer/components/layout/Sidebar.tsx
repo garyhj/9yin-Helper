@@ -1,30 +1,28 @@
-// --- 图标组件 ---
-import {NavLink} from "react-router-dom";
-import SettingsIcon from '@mui/icons-material/Settings';
 import BoltIcon from '@mui/icons-material/Bolt';
-import styled from "styled-components";
-import {useState} from "react";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HomeIcon from '@mui/icons-material/Home';
-import type { SvgIconComponent } from "@mui/icons-material";
-import { RoutePath } from "../../constants/routes";
+import SettingsIcon from '@mui/icons-material/Settings';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import type { SvgIconComponent } from '@mui/icons-material';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+import { RoutePath } from '../../constants/routes';
 
-// 导航项类型定义
 interface NavItem {
-    path: RoutePath;  // 使用枚举类型，类型更安全
-    label: string;
-    icon: SvgIconComponent;
-    show: boolean;  // 是否显示
+  path: RoutePath;
+  label: string;
+  icon: SvgIconComponent;
+  show: boolean;
 }
 
-// 导航项初始配置（默认全部显示）
-const defaultNavItems: NavItem[] = [
-    { path: RoutePath.HOME, label: '主界面', icon: HomeIcon, show: true },
-    { path: RoutePath.SETTINGS, label: '设置', icon: SettingsIcon, show: true },
+const navItems: NavItem[] = [
+  { path: RoutePath.HOME, label: '主界面', icon: HomeIcon, show: true },
+  { path: RoutePath.ENVIRONMENT, label: '环境检查', icon: TravelExploreIcon, show: true },
+  { path: RoutePath.SETTINGS, label: '设置', icon: SettingsIcon, show: true },
 ];
 
-// 喵~ 这是一个新的组件，专门用来包裹需要“消失”的文字
 const LinkText = styled.span<{ $isCollapsed: boolean }>`
   opacity: ${props => props.$isCollapsed ? 0 : 1};
   width: ${props => props.$isCollapsed ? '0' : 'auto'};
@@ -42,11 +40,7 @@ const SidebarContainer = styled.aside<{ $isCollapsed: boolean }>`
   border-right: 1.5px solid ${props => props.theme.colors.border};
   flex-shrink: 0;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* 喵~ 宽度现在由 theme 和 isCollapsed 状态共同决定！*/
-  width: ${props => props.$isCollapsed 
-    ? props.theme.sidebar.collapsedWidth 
-    : props.theme.sidebar.width}px;
+  width: ${props => props.$isCollapsed ? props.theme.sidebar.collapsedWidth : props.theme.sidebar.width}px;
 `;
 
 const Logo = styled.div`
@@ -57,8 +51,6 @@ const Logo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* MUI的组件设置 */
 
   .MuiSvgIcon-root {
     color: ${props => props.theme.colors.primaryHover};
@@ -71,7 +63,6 @@ const Nav = styled.nav`
   flex-direction: column;
   gap: 0.5rem;
 `;
-
 
 const StyledNavLink = styled(NavLink)<{ $isCollapsed: boolean }>`
   display: flex;
@@ -98,6 +89,7 @@ const StyledNavLink = styled(NavLink)<{ $isCollapsed: boolean }>`
   &.active {
     background-color: ${props => props.theme.colors.navActiveBg};
     color: ${props => props.theme.colors.navActiveText};
+
     .MuiSvgIcon-root {
       color: ${props => props.theme.colors.navActiveText};
     }
@@ -123,14 +115,11 @@ const ToggleButton = styled.button`
   }
 `;
 
-// 导航项动画包装器 - 用于实现平滑的显示/隐藏动画
 const NavItemWrapper = styled.div<{ $isVisible: boolean }>`
-  /* 使用 grid 技巧实现高度动画（从 0 到 auto） */
   display: grid;
   grid-template-rows: ${props => props.$isVisible ? '1fr' : '0fr'};
   transition: grid-template-rows 0.3s ease-in-out;
-  
-  /* 内部容器，配合 grid 实现溢出隐藏 */
+
   > div {
     overflow: hidden;
   }
@@ -138,8 +127,6 @@ const NavItemWrapper = styled.div<{ $isVisible: boolean }>`
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  // 导航项列表（带 show 属性）
-  const [navItems] = useState<NavItem[]>(defaultNavItems);
 
   return (
     <SidebarContainer $isCollapsed={isCollapsed}>

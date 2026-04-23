@@ -7,11 +7,11 @@ export const jiuyinGameModule: GameModule = {
     name: 'jiuyin',
     displayName: '九阴真经',
     status: 'planning',
-    description: '九阴真经专用自动化模块。阶段 0 仅接入项目壳，后续先验证窗口识别和输入后端。',
+    description: '九阴真经专用自动化模块。阶段 1 提供窗口识别、截图调试和输入探针，不启用业务自动化。',
     capabilities: [
-        'window-detection-planned',
-        'screen-capture-planned',
-        'input-probe-planned',
+        'window-detection',
+        'screen-capture-debug',
+        'input-probe',
         'input-backend-abstracted',
         'template-debug-planned',
     ],
@@ -29,7 +29,7 @@ export class JiuYinOperator implements GameOperator {
             gameId: this.gameId,
             isAvailable: false,
             isRunning: false,
-            message: '九阴模块已接入项目壳，窗口识别与输入验证尚未实现。',
+            message: '九阴阶段 1 已接入窗口识别、截图调试和输入探针；业务自动化尚未启用。',
         };
     }
 

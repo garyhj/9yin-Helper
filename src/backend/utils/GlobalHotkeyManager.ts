@@ -144,7 +144,7 @@ class GlobalHotkeyManager {
     
     /**
      * 解析 Electron Accelerator 字符串为组件
-     * @param accelerator 如 "Ctrl+Shift+F1"
+     * @param accelerator 如 "Ctrl+Shift+F10"
      */
     private parseAccelerator(accelerator: string): ParsedAccelerator {
         const parts = accelerator.split('+');
@@ -256,7 +256,7 @@ class GlobalHotkeyManager {
     
     /**
      * 注册快捷键
-     * @param accelerator Electron Accelerator 格式的快捷键字符串，如 "Ctrl+F1"
+     * @param accelerator Electron Accelerator 格式的快捷键字符串，如 "Ctrl+F10"
      * @param callback 快捷键触发时的回调函数
      * @returns 是否注册成功
      */

@@ -8,5 +8,6 @@
  */
 export enum RoutePath {
     HOME = '/',
+    ENVIRONMENT = '/environment',
     SETTINGS = '/settings',
 }

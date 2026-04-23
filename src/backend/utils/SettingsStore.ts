@@ -4,6 +4,8 @@ import Store from 'electron-store';
 type WindowBounds = Pick<Rectangle, 'x' | 'y' | 'width' | 'height'>;
 
 export type LogAutoCleanThreshold = 0 | 100 | 200 | 500 | 1000;
+export const DEFAULT_TOGGLE_HOTKEY = 'F10';
+export const DEFAULT_STOP_AFTER_TASK_HOTKEY = 'F12';
 
 interface AppSettings {
     isFirstLaunch: boolean;
@@ -19,8 +21,8 @@ interface AppSettings {
 const defaults: AppSettings = {
     isFirstLaunch: true,
     logAutoCleanThreshold: 500,
-    toggleHotkeyAccelerator: 'F1',
-    stopAfterGameHotkeyAccelerator: 'F2',
+    toggleHotkeyAccelerator: DEFAULT_TOGGLE_HOTKEY,
+    stopAfterGameHotkeyAccelerator: DEFAULT_STOP_AFTER_TASK_HOTKEY,
     window: {
         bounds: null,
         isMaximized: false,
@@ -48,6 +50,23 @@ class SettingsStore {
 
     public set<T = unknown>(key: string, value: T): void {
         this.store.set(key as any, value as any);
+    }
+
+    public migrateStageOneHotkeys(): void {
+        const toggleHotkey = this.get<string>('toggleHotkeyAccelerator');
+        const stopAfterTaskHotkey = this.get<string>('stopAfterGameHotkeyAccelerator');
+
+        if (toggleHotkey === 'F1') {
+            this.set('toggleHotkeyAccelerator', DEFAULT_TOGGLE_HOTKEY);
+        }
+
+        if (stopAfterTaskHotkey === 'F2') {
+            const nextToggleHotkey = this.get<string>('toggleHotkeyAccelerator');
+            const nextStopHotkey = nextToggleHotkey === DEFAULT_STOP_AFTER_TASK_HOTKEY
+                ? 'F11'
+                : DEFAULT_STOP_AFTER_TASK_HOTKEY;
+            this.set('stopAfterGameHotkeyAccelerator', nextStopHotkey);
+        }
     }
 
     public getRawStore(): Store<AppSettings> {

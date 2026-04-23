@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-import type { IpcApi, SettingsApi, UtilApi } from '../shared/preload-api.ts';
+import type { IpcApi, JiuYinApi, SettingsApi, UtilApi } from '../shared/preload-api.ts';
 
 export {};
 
@@ -19,5 +19,6 @@ declare global {
         ipc: IpcApi;
         util: UtilApi;
         settings: SettingsApi;
+        jiuyin: JiuYinApi;
     }
 }
