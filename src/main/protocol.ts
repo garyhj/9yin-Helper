@@ -14,4 +14,7 @@ export enum IpcChannel {
     JIUYIN_INPUT_PROBE = 'jiuyin-input-probe',
     JIUYIN_RUNTIME_GET = 'jiuyin-runtime-get',
     JIUYIN_RUNTIME_UPDATED = 'jiuyin-runtime-updated',
+    JIUYIN_TEMPLATE_LIST = 'jiuyin-template-list',
+    JIUYIN_TEMPLATE_MATCH = 'jiuyin-template-match',
+    JIUYIN_TEMPLATE_OPEN_ROOT = 'jiuyin-template-open-root',
 }

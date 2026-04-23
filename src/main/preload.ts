@@ -62,5 +62,8 @@ const jiuYinApi: JiuYinApi = {
     captureRegion: (request) => ipcRenderer.invoke(IpcChannel.JIUYIN_CAPTURE_REGION, request),
     runInputProbe: (request) => ipcRenderer.invoke(IpcChannel.JIUYIN_INPUT_PROBE, request),
     getRuntimeState: () => ipcRenderer.invoke(IpcChannel.JIUYIN_RUNTIME_GET),
+    listTemplates: () => ipcRenderer.invoke(IpcChannel.JIUYIN_TEMPLATE_LIST),
+    matchTemplates: (request) => ipcRenderer.invoke(IpcChannel.JIUYIN_TEMPLATE_MATCH, request),
+    openTemplateRoot: () => ipcRenderer.invoke(IpcChannel.JIUYIN_TEMPLATE_OPEN_ROOT),
 };
 contextBridge.exposeInMainWorld('jiuyin', jiuYinApi);

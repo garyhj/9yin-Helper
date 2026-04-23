@@ -110,15 +110,16 @@ export const JiuYinHomePage = () => {
   return (
     <PageWrapper>
       <Hero>
-        <Eyebrow>JiuYin Helper / Phase 1</Eyebrow>
+        <Eyebrow>JiuYin Helper / Phase 2</Eyebrow>
         <Title>九阴真经助手</Title>
         <Subtitle>
-          阶段 1 已接入基础环境与输入验证能力：可以识别九阴窗口、记录窗口坐标和 DPI、
-          保存调试截图，并通过 nut-js 验证前台点击、按键、组合键和拖拽是否真实生效。
+          阶段 2 已接入模板识别调试能力：可以扫描九阴模板目录，使用窗口截图或指定图片运行匹配，
+          输出置信度、坐标和失败样本，继续保持业务自动化禁用。
         </Subtitle>
         <ActionRow>
           <PrimaryLink to={RoutePath.ENVIRONMENT}>打开环境检查</PrimaryLink>
-          <StatusBadge>业务自动化仍保持禁用，等待人工验证输入有效性</StatusBadge>
+          <PrimaryLink to={RoutePath.TEMPLATE_DEBUG}>打开模板调试</PrimaryLink>
+          <StatusBadge>业务自动化仍保持禁用，等待真实模板素材验收</StatusBadge>
         </ActionRow>
       </Hero>
 
@@ -130,9 +131,9 @@ export const JiuYinHomePage = () => {
           </CardText>
         </Card>
         <Card>
-          <CardTitle>2. 输入探针</CardTitle>
+          <CardTitle>2. 模板调试</CardTitle>
           <CardText>
-            当前支持前台点击、普通按键、组合键和拖拽探针。默认只做验证动作，不会启动团练、授业、采集等业务流程。
+            模板调试页会按通用、任务、团练、授业、采集、生活、日常、隐士分类扫描模板，并输出匹配坐标。
           </CardText>
         </Card>
         <Card>

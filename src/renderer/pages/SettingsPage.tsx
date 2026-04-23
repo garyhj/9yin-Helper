@@ -1,8 +1,8 @@
 import { type ChangeEvent, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ThemeType } from '../styles/theme.ts';
-import { logStore, LogAutoCleanThreshold } from '../stores/logStore.ts';
 import { toast } from '../components/toast/toast-core.ts';
+import { logStore, LogAutoCleanThreshold } from '../stores/logStore.ts';
+import { ThemeType } from '../styles/theme.ts';
 
 const PageWrapper = styled.div<{ theme: ThemeType }>`
   background-color: ${props => props.theme.colors.background};
@@ -165,7 +165,7 @@ const SettingsPage = () => {
     const success = await window.util.setToggleHotkey(accelerator);
     if (success) {
       setToggleHotkey(accelerator);
-      toast.success(accelerator ? '任务开关快捷键已更新' : '任务开关快捷键已取消');
+      toast.success(accelerator ? '启停快捷键已更新' : '启停快捷键已取消');
     } else {
       toast.error('快捷键注册失败，请换一个组合键');
     }
@@ -175,7 +175,7 @@ const SettingsPage = () => {
     const success = await window.util.setStopAfterGameHotkey(accelerator);
     if (success) {
       setStopAfterTaskHotkey(accelerator);
-      toast.success(accelerator ? '任务结束后停止快捷键已更新' : '任务结束后停止快捷键已取消');
+      toast.success(accelerator ? '安全停止快捷键已更新' : '安全停止快捷键已取消');
     } else {
       toast.error('快捷键注册失败，请换一个组合键');
     }
@@ -243,8 +243,8 @@ const SettingsPage = () => {
       <NoticeCard>
         <ul>
           <li>项目已调整为九阴专用方向，不再保留 TFT、阵容、棋盘和对局设置入口。</li>
-          <li>当前处于阶段 0：只完成项目壳、目录和基础配置，自动化任务尚未启用。</li>
-          <li>后续阶段会先验证窗口识别、截图区域和 nut-js 输入，验证通过后再开发团练、授业等功能。</li>
+          <li>当前处于阶段 2：模板采集与识别调试。业务自动化仍未启用。</li>
+          <li>模板调试只输出识别结果和坐标，不会执行点击、按键或后台操作。</li>
           <li>不提供反检测、窗口绑定、最小化后台执行、内存、封包、驱动或绕过安全软件相关能力。</li>
         </ul>
       </NoticeCard>
@@ -253,8 +253,8 @@ const SettingsPage = () => {
       <SettingsCard>
         <SettingItem>
           <SettingText>
-            <h3>任务开关</h3>
-            <p>用于后续九阴任务的全局启动/停止。录入时按 Esc 可取消绑定。</p>
+            <h3>阶段验证启停</h3>
+            <p>默认使用 F10，避开九阴常用的 F1~F9。录入时按 Esc 可取消绑定。</p>
           </SettingText>
           <HotkeyInput
             $isRecording={isRecordingToggleHotkey}
@@ -270,8 +270,8 @@ const SettingsPage = () => {
 
         <SettingItem>
           <SettingText>
-            <h3>当前任务结束后停止</h3>
-            <p>用于后续让九阴任务在安全检查点收尾停止。录入时按 Esc 可取消绑定。</p>
+            <h3>当前动作后安全停止</h3>
+            <p>默认使用 F12，用于后续让九阴任务在安全检查点收尾停止。录入时按 Esc 可取消绑定。</p>
           </SettingText>
           <HotkeyInput
             $isRecording={isRecordingStopAfterTaskHotkey}
@@ -308,7 +308,7 @@ const SettingsPage = () => {
         <SettingItem>
           <SettingText>
             <h3>项目</h3>
-            <p>九阴真经助手。阶段 0 只保留九阴专用入口和通用配置。</p>
+            <p>九阴真经助手。阶段 2 聚焦模板调试和失败样本复盘，业务自动化仍保持禁用。</p>
           </SettingText>
           <VersionText>v{currentVersion || '加载中'}</VersionText>
         </SettingItem>

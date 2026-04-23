@@ -9,5 +9,6 @@
 export enum RoutePath {
     HOME = '/',
     ENVIRONMENT = '/environment',
+    TEMPLATE_DEBUG = '/template-debug',
     SETTINGS = '/settings',
 }

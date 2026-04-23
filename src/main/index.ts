@@ -9,6 +9,8 @@ import {
     jiuYinCaptureService,
     jiuYinEnvironmentService,
     jiuYinInputProbeService,
+    jiuYinTemplateMatcherService,
+    jiuYinTemplateService,
     jiuYinWindowHelper,
 } from '../backend/games';
 import { initGlobalCrashHandler } from '../backend/utils/CrashLogger.ts';
@@ -20,6 +22,7 @@ import type {
     JiuYinInputProbeRequest,
     JiuYinRuntimeState,
 } from '../shared/jiuyin-stage1.ts';
+import type { JiuYinTemplateMatchRequest } from '../shared/jiuyin-stage2.ts';
 
 initGlobalCrashHandler();
 
@@ -259,6 +262,21 @@ function registerHandlers() {
     });
 
     ipcMain.handle(IpcChannel.JIUYIN_RUNTIME_GET, async () => runtimeState);
+
+    ipcMain.handle(IpcChannel.JIUYIN_TEMPLATE_LIST, async () => {
+        return jiuYinTemplateService.listTemplates();
+    });
+
+    ipcMain.handle(IpcChannel.JIUYIN_TEMPLATE_MATCH, async (_event, request: JiuYinTemplateMatchRequest) => {
+        return jiuYinTemplateMatcherService.matchTemplates(request);
+    });
+
+    ipcMain.handle(IpcChannel.JIUYIN_TEMPLATE_OPEN_ROOT, async () => {
+        const rootPath = jiuYinTemplateService.getTemplateRoot();
+        await jiuYinTemplateService.ensureTemplateDirectories();
+        await shell.openPath(rootPath);
+        return rootPath;
+    });
 }
 
 app.whenReady().then(() => {

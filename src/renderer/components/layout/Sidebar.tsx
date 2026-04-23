@@ -2,6 +2,7 @@ import BoltIcon from '@mui/icons-material/Bolt';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HomeIcon from '@mui/icons-material/Home';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import SettingsIcon from '@mui/icons-material/Settings';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import type { SvgIconComponent } from '@mui/icons-material';
@@ -20,6 +21,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { path: RoutePath.HOME, label: '主界面', icon: HomeIcon, show: true },
   { path: RoutePath.ENVIRONMENT, label: '环境检查', icon: TravelExploreIcon, show: true },
+  { path: RoutePath.TEMPLATE_DEBUG, label: '模板调试', icon: ImageSearchIcon, show: true },
   { path: RoutePath.SETTINGS, label: '设置', icon: SettingsIcon, show: true },
 ];
 

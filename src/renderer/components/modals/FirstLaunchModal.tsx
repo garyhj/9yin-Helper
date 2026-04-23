@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { ThemeType } from '../../styles/theme';
 import CloseIcon from '@mui/icons-material/Close';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { ThemeType } from '../../styles/theme';
 
-// ============================================
-// 样式组件
-// ============================================
-
-/** 遮罩层 - 覆盖整个屏幕 */
 const Overlay = styled.div<{ $isVisible: boolean }>`
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
@@ -25,12 +17,11 @@ const Overlay = styled.div<{ $isVisible: boolean }>`
     transition: opacity 0.3s ease, visibility 0.3s ease;
 `;
 
-/** 弹窗容器 */
 const ModalContainer = styled.div<{ theme: ThemeType; $isVisible: boolean }>`
     background-color: ${props => props.theme.colors.elementBg};
     border-radius: 12px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
+    max-width: 620px;
     width: 90%;
     max-height: 80vh;
     overflow: hidden;
@@ -38,7 +29,6 @@ const ModalContainer = styled.div<{ theme: ThemeType; $isVisible: boolean }>`
     transition: transform 0.3s ease;
 `;
 
-/** 弹窗头部 */
 const ModalHeader = styled.div<{ theme: ThemeType }>`
     display: flex;
     align-items: center;
@@ -48,14 +38,12 @@ const ModalHeader = styled.div<{ theme: ThemeType }>`
     background: linear-gradient(135deg, ${props => props.theme.colors.primary}20 0%, transparent 100%);
 `;
 
-/** 标题区域 */
 const TitleArea = styled.div`
     display: flex;
     align-items: center;
     gap: 12px;
 `;
 
-/** 标题图标 */
 const TitleIcon = styled.div<{ theme: ThemeType }>`
     width: 40px;
     height: 40px;
@@ -71,7 +59,6 @@ const TitleIcon = styled.div<{ theme: ThemeType }>`
     }
 `;
 
-/** 标题文字 */
 const Title = styled.h2<{ theme: ThemeType }>`
     margin: 0;
     font-size: 1.3rem;
@@ -79,7 +66,6 @@ const Title = styled.h2<{ theme: ThemeType }>`
     color: ${props => props.theme.colors.text};
 `;
 
-/** 关闭按钮 */
 const CloseButton = styled.button<{ theme: ThemeType }>`
     background: none;
     border: none;
@@ -98,44 +84,33 @@ const CloseButton = styled.button<{ theme: ThemeType }>`
     }
 `;
 
-/** 弹窗内容 */
 const ModalContent = styled.div<{ theme: ThemeType }>`
     padding: 24px;
     overflow-y: auto;
     max-height: 50vh;
-    text-align: left;  /* 确保内容左对齐 */
+    text-align: left;
 `;
 
-/** 说明文字段落 */
 const Paragraph = styled.p<{ theme: ThemeType }>`
-    margin: 0 0 16px 0;
+    margin: 0 0 16px;
     font-size: 0.95rem;
     line-height: 1.7;
     color: ${props => props.theme.colors.text};
-    text-align: left;  /* 段落左对齐 */
-    
-    &:last-child {
-        margin-bottom: 0;
-    }
 `;
 
-/** 高亮文字 */
 const Highlight = styled.span<{ theme: ThemeType }>`
     color: ${props => props.theme.colors.primary};
     font-weight: 600;
 `;
 
-/** 警告文字 */
 const Warning = styled.span<{ theme: ThemeType }>`
     color: ${props => props.theme.colors.warning};
     font-weight: 600;
 `;
 
-/** 列表 */
 const List = styled.ul<{ theme: ThemeType }>`
-    margin: 0 0 16px 0;
+    margin: 0 0 16px;
     padding-left: 20px;
-    text-align: left;  /* 列表左对齐 */
     
     li {
         margin-bottom: 8px;
@@ -145,7 +120,6 @@ const List = styled.ul<{ theme: ThemeType }>`
     }
 `;
 
-/** GitHub 链接容器 - 放在底部按钮左侧 */
 const GitHubCard = styled.a<{ theme: ThemeType }>`
     display: flex;
     align-items: center;
@@ -174,10 +148,9 @@ const GitHubCard = styled.a<{ theme: ThemeType }>`
     }
 `;
 
-/** 弹窗底部 - 使用 space-between 让卡片靠左、按钮靠右 */
 const ModalFooter = styled.div<{ theme: ThemeType }>`
     display: flex;
-    justify-content: space-between;  /* 两端对齐 */
+    justify-content: space-between;
     align-items: center;
     gap: 12px;
     padding: 16px 24px;
@@ -185,7 +158,6 @@ const ModalFooter = styled.div<{ theme: ThemeType }>`
     background-color: ${props => props.theme.colors.background};
 `;
 
-/** 确认按钮 */
 const ConfirmButton = styled.button<{ theme: ThemeType }>`
     padding: 10px 24px;
     font-size: 0.95rem;
@@ -201,49 +173,31 @@ const ConfirmButton = styled.button<{ theme: ThemeType }>`
         transform: translateY(-2px);
         box-shadow: 0 4px 12px ${props => props.theme.colors.primary}40;
     }
-    
-    &:active {
-        transform: translateY(0);
-    }
 `;
 
-// ============================================
-// 组件
-// ============================================
-
 interface FirstLaunchModalProps {
-    /** 是否显示弹窗 */
     isOpen: boolean;
-    /** 关闭弹窗的回调 */
     onClose: () => void;
-    /** 确认按钮的回调 */
     onConfirm: () => void;
 }
 
-/**
- * 首次启动引导弹窗
- * 向首次使用的用户展示软件说明信息
- */
 export const FirstLaunchModal: React.FC<FirstLaunchModalProps> = ({
     isOpen,
     onClose,
     onConfirm,
 }) => {
-    // 内部状态控制动画
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
-            // 延迟一帧再显示，确保动画生效
             requestAnimationFrame(() => setIsVisible(true));
         } else {
             setIsVisible(false);
         }
     }, [isOpen]);
 
-    // 点击遮罩层关闭
-    const handleOverlayClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
+    const handleOverlayClick = (event: React.MouseEvent) => {
+        if (event.target === event.currentTarget) {
             onClose();
         }
     };
@@ -267,29 +221,31 @@ export const FirstLaunchModal: React.FC<FirstLaunchModalProps> = ({
 
                 <ModalContent>
                     <Paragraph>
-                        感谢你选择使用我的妙妙软件！在开始之前，请阅读以下重要说明：
+                        这是九阴真经专用助手。当前处于阶段 2，重点是环境验证、截图采集和模板识别调试，
+                        不会启动团练、授业、采集等业务自动化流程。
                     </Paragraph>
 
                     <List>
                         <li>
-                            <Warning>建议以管理员模式运行</Warning>，否则可能无法稳定识别或控制游戏窗口
+                            <Warning>建议以管理员模式运行</Warning>，避免窗口聚焦、截图或输入探针受到系统权限限制。
                         </li>
                         <li>
-                            默认快捷键：<Highlight>F10</Highlight> 开始/停止任务，<Highlight>F12</Highlight> 当前任务结束后停止
+                            默认快捷键：<Highlight>F10</Highlight> 启停阶段验证，<Highlight>F12</Highlight> 当前动作后安全停止。
                         </li>
                         <li>
-                            阶段 0 仅接入九阴专用项目壳，自动任务会从窗口识别和输入验证开始逐步补齐
+                            模板调试只会输出置信度和坐标，不会自动点击，也不会后台绑定窗口。
                         </li>
                         <li>
-                            后续九阴功能默认要求窗口可见、非最小化，并且不要和程序争抢鼠标键盘
+                            所有功能默认要求九阴窗口可见、非最小化，并支持人工接管。
                         </li>
                     </List>
 
                     <Paragraph>
-                        <Warning>本软件完全开源免费（记得点star）</Warning>，若你付费购买了本软件，那你被坑了！
+                        <Warning>本软件开源免费。</Warning>如果你付费购买了本软件，请谨慎核实来源。
                     </Paragraph>
                     <Paragraph>
-                        本软件仅供学习交流使用，不包含反检测、驱动绕过、内存封包或后台绑定窗口能力。使用本软件所产生的任何后果由用户自行承担！
+                        本项目仅供学习交流使用，不包含反检测、驱动绕过、内存封包、注入或后台窗口绑定能力。
+                        使用本软件产生的任何后果由用户自行承担。
                     </Paragraph>
                 </ModalContent>
 
@@ -305,7 +261,6 @@ export const FirstLaunchModal: React.FC<FirstLaunchModalProps> = ({
                         项目仓库
                     </GitHubCard>
 
-                    {/* 确认按钮 - 靠右 */}
                     <ConfirmButton onClick={onConfirm}>
                         我已了解，开始使用
                     </ConfirmButton>

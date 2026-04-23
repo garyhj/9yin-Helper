@@ -1,3 +1,9 @@
+import type {
+    JiuYinTemplateLibrarySummary,
+    JiuYinTemplateMatchReport,
+    JiuYinTemplateMatchRequest,
+} from './jiuyin-stage2.ts';
+
 export interface JiuYinInputPoint {
     x: number;
     y: number;
@@ -93,4 +99,7 @@ export interface JiuYinApi {
     captureRegion(request: JiuYinCaptureRequest): Promise<JiuYinCaptureResult>;
     runInputProbe(request: JiuYinInputProbeRequest): Promise<JiuYinInputProbeResult>;
     getRuntimeState(): Promise<JiuYinRuntimeState>;
+    listTemplates(): Promise<JiuYinTemplateLibrarySummary>;
+    matchTemplates(request: JiuYinTemplateMatchRequest): Promise<JiuYinTemplateMatchReport>;
+    openTemplateRoot(): Promise<string>;
 }

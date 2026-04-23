@@ -13,7 +13,8 @@ export const jiuyinGameModule: GameModule = {
         'screen-capture-debug',
         'input-probe',
         'input-backend-abstracted',
-        'template-debug-planned',
+        'template-library-scan',
+        'template-match-debug',
     ],
 };
 

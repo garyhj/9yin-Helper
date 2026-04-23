@@ -7,6 +7,7 @@ import {JiuYinHomePage} from "./pages/JiuYinHomePage.tsx";
 import { RoutePath } from "./constants/routes";
 
 const EnvironmentCheckPage = lazy(() => import('./pages/EnvironmentCheckPage'));
+const TemplateDebugPage = lazy(() => import('./pages/TemplateDebugPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 
 
@@ -38,6 +39,14 @@ export const router = createHashRouter([
                 element: (
                     <Suspense fallback={loadingFallback}>
                         <EnvironmentCheckPage/>
+                    </Suspense>
+                )
+            },
+            {
+                path: RoutePath.TEMPLATE_DEBUG.slice(1),
+                element: (
+                    <Suspense fallback={loadingFallback}>
+                        <TemplateDebugPage/>
                     </Suspense>
                 )
             },
