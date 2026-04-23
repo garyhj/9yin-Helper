@@ -91,7 +91,7 @@ class LogStore {
      */
     async refreshThreshold(): Promise<void> {
         try {
-            const threshold = await window.lineup?.getLogAutoCleanThreshold();
+            const threshold = await window.settings?.get<LogAutoCleanThreshold>('logAutoCleanThreshold');
             if (typeof threshold === 'number') {
                 this.cachedThreshold = threshold as LogAutoCleanThreshold;
             }
@@ -106,7 +106,7 @@ class LogStore {
     async setThreshold(threshold: LogAutoCleanThreshold): Promise<void> {
         this.cachedThreshold = threshold;
         try {
-            await window.lineup?.setLogAutoCleanThreshold(threshold);
+            await window.settings?.set('logAutoCleanThreshold', threshold);
         } catch (error) {
             console.error('[LogStore] 设置日志清理阈值失败:', error);
         }
@@ -177,6 +177,12 @@ class LogStore {
     clearLogs() {
         this.logs = [];
         this.notifyListeners();
+    }
+
+    dispose() {
+        this.ipcCleanup?.();
+        this.ipcCleanup = null;
+        this.initialized = false;
     }
 
     /**

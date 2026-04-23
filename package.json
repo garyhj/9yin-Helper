@@ -1,8 +1,8 @@
 {
-  "name": "tft-hextech-helper",
+  "name": "jiuyin-helper",
   "private": true,
-  "version": "1.6.0",
-  "description": "云顶之弈海克斯助手 TFT-Hextech-Helper",
+  "version": "0.1.0",
+  "description": "九阴真经助手 JiuYin-Helper",
   "author": "WJZ_P",
   "email": "1369727119@qq.com",
   "type": "module",

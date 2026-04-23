@@ -1,5 +1,5 @@
-appId: com.wjz.tft-hextech-helper
-productName: TFT-Hextech-Helper
+appId: com.wjz.jiuyin-helper
+productName: JiuYin-Helper
 directories:
   buildResources: build
   output: release  # 打包输出目录
@@ -21,22 +21,6 @@ files:
 
 # 额外资源文件：复制到 resources 目录，运行时通过 process.resourcesPath 访问
 extraResources:
-  - from: public/lineups
-    to: lineups
-    filter:
-      - '**/*'
-  - from: public/TFTInfo
-    to: TFTInfo
-    filter:
-      - '**/*'
-  - from: public/GameConfig
-    to: GameConfig
-    filter:
-      - '**/*'
-  - from: public/gamePhotos
-    to: gamePhotos
-    filter:
-      - '**/*'
   - from: public/resources
     to: resources
     filter:
@@ -57,7 +41,7 @@ asarUnpack:
 
 # Windows 配置
 win:
-  executableName: TFT-Hextech-Helper
+  executableName: JiuYin-Helper
   icon: public/icon.ico
   target:
     - target: nsis
@@ -74,8 +58,8 @@ nsis:
   oneClick: false  # 非一键安装，允许用户选择安装路径
   allowToChangeInstallationDirectory: true
   artifactName: ${name}-${version}-setup.${ext}
-  shortcutName: TFT-Hextech-Helper
-  uninstallDisplayName: TFT-Hextech-Helper
+  shortcutName: JiuYin-Helper
+  uninstallDisplayName: JiuYin-Helper
   createDesktopShortcut: always
   createStartMenuShortcut: true
 
@@ -102,7 +86,7 @@ dmg:
 
 # Linux 配置
 linux:
-  executableName: tft-hextech-helper
+  executableName: jiuyin-helper
   icon: public/icon512x512.png
   category: Game
   maintainer: "WJZ-P <1369727119@qq.com>"

@@ -8,7 +8,5 @@
  */
 export enum RoutePath {
     HOME = '/',
-    LINEUPS = '/lineups',
-    DEBUG = '/debug',
     SETTINGS = '/settings',
 }
