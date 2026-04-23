@@ -9,11 +9,11 @@ import { RoutePath } from "./constants/routes";
 const SettingsPage = lazy(() => import('./components/pages/SettingsPage'));
 
 
-const LoadingSpinner = () => (
+const loadingFallback = (
     <div className="w-full h-full flex items-center justify-center">
         <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-indigo-400"></div>
     </div>
-)
+);
 
 
 
@@ -27,7 +27,7 @@ export const router = createHashRouter([
             {
                 index:true,
                 element: (
-                    <Suspense fallback={<LoadingSpinner/>}>
+                    <Suspense fallback={loadingFallback}>
                         <JiuYinHomePage/>
                     </Suspense>
                 )
@@ -35,7 +35,7 @@ export const router = createHashRouter([
             {
                 path: RoutePath.SETTINGS.slice(1),
                 element: (
-                    <Suspense fallback={<LoadingSpinner/>}>
+                    <Suspense fallback={loadingFallback}>
                         <SettingsPage/>
                     </Suspense>
                 )
